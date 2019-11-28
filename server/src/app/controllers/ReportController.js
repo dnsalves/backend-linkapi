@@ -23,11 +23,16 @@ class ReportController {
           yearMonthDayUTC: {
             $dateToString: { format: '%Y-%m-%d', date: '$won_time' },
           },
-          value: '$value',
+          value: 1,
+          // sum_of_value: { $sum: '$value' },
         },
       },
       {
-        $group: { _id: '$yearMonthDayUTC', sum_of_value: { $sum: '$value' } },
+        $group: {
+          _id: '$yearMonthDayUTC',
+          sum_of_value: { $sum: '$value' },
+          deals: { $sum: 1 },
+        },
       },
     ]);
     return res.json(result);
